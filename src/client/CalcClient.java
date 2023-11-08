@@ -53,9 +53,13 @@ public class CalcClient
         int size = inputStream.read(recvBytes); //read bytes from stream
         ResponseEntity resultEntity = ObjectManager.toObject(recvBytes, ResponseEntity.class); //byte array to object
         /*Prints result*/
-        System.out.println("Status Code : " + resultEntity.getStatusCode());
-        System.out.println("Server Message : " + resultEntity.getMessage());
-        System.out.println("Result = " + resultEntity.getCalcNum());
+        if(resultEntity.getStatusCode() == 200)
+            System.out.println("Result = " + resultEntity.getCalcNum());
+        else
+        {
+            System.out.println("Status Code : " + resultEntity.getStatusCode());
+            System.out.println("Server Message : " + resultEntity.getMessage());
+        }
         inputStream.close();
     }
 
