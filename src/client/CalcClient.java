@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class CalcClient
 {
-    public static void main(String[] args) throws IOException, ClassNotFoundException
+    public static void main(String[] args) throws IOException
     {
         Socket socket = new Socket("localhost", 59090);
         InputStream inputStream = socket.getInputStream();
@@ -21,10 +21,7 @@ public class CalcClient
         outputStream.write(reqArray);
         outputStream.flush();
 
-//        System.out.println("object.getA() = " + object.getA());
-//        System.out.println("Server response : " + in.nextLine());
-//        String jsonByte =
-//        int inputSize = inputStream.read(recvBuffer);
+
     }
 
     public static RequestEntity inputs()
