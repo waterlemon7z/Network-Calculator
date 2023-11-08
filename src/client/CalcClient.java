@@ -2,7 +2,9 @@ package client;
 
 import entity.RequestEntity;
 import entity.ResponseEntity;
+import entity.ServerInfoEntity;
 import utils.ObjectManager;
+import utils.ServerAddrSetting;
 
 import java.io.*;
 import java.net.Socket;
@@ -13,7 +15,8 @@ public class CalcClient
 {
     public static void main(String[] args) throws IOException, ClassNotFoundException
     {
-        Socket socket = new Socket("localhost", 59090);
+        ServerInfoEntity serverInfo = ServerAddrSetting.getServerInfo();
+        Socket socket = new Socket(serverInfo.getServerAddr(), serverInfo.getPort());
 
         RequestEntity inputs = inputs();
 
@@ -21,14 +24,17 @@ public class CalcClient
         byte[] reqArray = ObjectManager.toByteArray(inputs);
         outputStream.write(reqArray);
         outputStream.flush();
-//        outputStream.close();
 
         InputStream inputStream = socket.getInputStream();
         byte[] recvBytes = new byte[1024];
         int size = inputStream.read(recvBytes);
         ResponseEntity resultEntity = ObjectManager.toObject(recvBytes, ResponseEntity.class);
-        System.out.println("resultEntity.toString() = " + resultEntity.toString());
+        System.out.println("Status Code : " + resultEntity.getStatusCode());
+        System.out.println("Server Message : " + resultEntity.getMessage());
+        System.out.println("Result = " + resultEntity.getCalcNum());
+//        System.out.println("resultEntity.toString() = " + resultEntity.toString());
         inputStream.close();
+        outputStream.close();
     }
 
     public static RequestEntity inputs()
