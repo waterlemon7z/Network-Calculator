@@ -24,6 +24,13 @@ class CalculatorSystem implements Runnable
         this.socket = socket;
     }
 
+    /*
+     * Name        : run
+     * Date        : 2023-11-08
+     * argument    : none
+     * return      : void
+     * description : running program each client
+     */
     @Override
     public void run()
     {
@@ -32,20 +39,20 @@ class CalculatorSystem implements Runnable
         {
             InputStream is = socket.getInputStream();
             byte[] recvBytes = new byte[1024];
-            int size = is.read(recvBytes);
-            RequestEntity receiveEntity = ObjectManager.toObject(recvBytes, RequestEntity.class);
+            int size = is.read(recvBytes); // read from client
+            RequestEntity receiveEntity = ObjectManager.toObject(recvBytes, RequestEntity.class); // byte arr -> object
 
-            ResponseEntity resEntity = calculator(receiveEntity);
-            send2client(resEntity);
+            ResponseEntity resEntity = calculator(receiveEntity); // execute calculator
+            send2client(resEntity); // send to client
         } catch (IOException | ClassNotFoundException e)
         {
             throw new RuntimeException(e);
         } catch (InvalidCalculationException e)
         {
-            ResponseEntity resEntity = new ResponseEntity(500, null, e.getMessage());
+            ResponseEntity resEntity = new ResponseEntity(500, null, e.getMessage()); // when failed to calculate
             try
             {
-                send2client(resEntity);
+                send2client(resEntity); // send to client with error code.
             } catch (IOException ex)
             {
                 throw new RuntimeException(ex);
@@ -53,6 +60,13 @@ class CalculatorSystem implements Runnable
         }
     }
 
+    /*
+     * Name        : send2client
+     * Date        : 2023-11-08
+     * argument    : Object
+     * return      : void
+     * description : send object to client
+     */
     void send2client(Object resEntity) throws IOException
     {
         OutputStream os = socket.getOutputStream();
@@ -62,18 +76,25 @@ class CalculatorSystem implements Runnable
         os.close();
     }
 
+    /*
+     * Name        : calculator
+     * Date        : 2023-11-08
+     * argument    : RequestEntity
+     * return      : ResponseEntity
+     * description : calculate number from client.
+     */
     public ResponseEntity calculator(RequestEntity req) throws InvalidCalculationException
     {
         double rst;
         List<Integer> operands = new ArrayList<>();
-        String[] splitMsg = req.getCalcMessage().split(" ");
-        String operator = splitMsg[0].toUpperCase();
+        String[] splitMsg = req.getCalcMessage().split(" "); //split by ' '
+        String operator = splitMsg[0].toUpperCase(); // this will be operator
         for(int i = 1; i < splitMsg.length; i++)
         {
-            operands.add(Integer.parseInt(splitMsg[i]));
+            operands.add(Integer.parseInt(splitMsg[i])); // index 1 and 2 will be operands
         }
 
-        if (operands.size() != 2)
+        if (operands.size() != 2) // but when operands not be 2
             throw new InvalidCalculationException("Invalid operand : Has " + operands.size() + " operands");
 
         switch (operator)
@@ -89,7 +110,7 @@ class CalculatorSystem implements Runnable
                 break;
             case "DIV":
                 if (operands.get(1) == 0)
-                    throw new InvalidCalculationException("Divide by Zero");
+                    throw new InvalidCalculationException("Divide by Zero"); // if divide by 0
                 rst = (double) operands.get(0) / operands.get(1);
                 break;
             default:

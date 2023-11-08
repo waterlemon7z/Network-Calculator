@@ -2,6 +2,11 @@ package entity;
 
 import java.io.Serializable;
 
+/*
+ * Name        : ResponseEntity
+ * Date        : 2023-11-08
+ * description : this class is used for sending response
+ */
 public class ResponseEntity implements Serializable
 {
     int statusCode;

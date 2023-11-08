@@ -2,6 +2,11 @@ package utils;
 
 import java.io.*;
 
+/*
+ * Name        : ObjectManager
+ * Date        : 2023-11-08
+ * description : this class manage object like, byte to object, object to byte
+ */
 public class ObjectManager
 {
     public static <T> T toObject(byte[] bytes, Class<T> type)

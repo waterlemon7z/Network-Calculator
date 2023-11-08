@@ -6,6 +6,11 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/*
+ * Name        : ServerAddrSetting
+ * Date        : 2023-11-08
+ * description : this class manage server settings
+ */
 public class ServerAddrSetting
 {
     public static void main(String[] args) throws IOException
@@ -18,7 +23,7 @@ public class ServerAddrSetting
         fileOutput.close();
     }
 
-public     static ServerInfoEntity getServerInfo() throws IOException, ClassNotFoundException
+    public static ServerInfoEntity getServerInfo() throws IOException, ClassNotFoundException
     {
         BufferedInputStream fileInput = new BufferedInputStream(Files.newInputStream(Paths.get("server_info.dat")));
         byte[] input = new byte[1024];
