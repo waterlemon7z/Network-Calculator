@@ -30,5 +30,4 @@ public class ServerAddrSetting
         int size = fileInput.read(input);
         return ObjectManager.toObject(input, ServerInfoEntity.class);
     }
-
 }

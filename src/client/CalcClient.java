@@ -58,6 +58,7 @@ public class CalcClient
         System.out.println("Result = " + resultEntity.getCalcNum());
         inputStream.close();
     }
+
     /*
      * Name        : inputs
      * Date        : 2023-11-08

@@ -1,4 +1,5 @@
 package host;
+
 import entity.RequestEntity;
 import entity.ServerInfoEntity;
 import utils.ObjectManager;
@@ -25,13 +26,13 @@ public class CalcServer
         ServerSocket serverSocket = new ServerSocket(serverInfo.getPort());//open socket
         System.out.println("Calculator Server is Running!!");
         ExecutorService pool = Executors.newFixedThreadPool(20); //Defines threads.
-        while(true)
+        while (true)
         {
             Socket socket = serverSocket.accept(); // when clients connected
             try
             {
                 pool.execute(new CalculatorSystem(socket)); //execute it
-            }catch (RuntimeException e)
+            } catch (RuntimeException e)
             {
                 System.out.println(e.getMessage());
             }

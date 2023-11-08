@@ -89,7 +89,7 @@ class CalculatorSystem implements Runnable
         List<Integer> operands = new ArrayList<>();
         String[] splitMsg = req.getCalcMessage().split(" "); //split by ' '
         String operator = splitMsg[0].toUpperCase(); // this will be operator
-        for(int i = 1; i < splitMsg.length; i++)
+        for (int i = 1; i < splitMsg.length; i++)
         {
             operands.add(Integer.parseInt(splitMsg[i])); // index 1 and 2 will be operands
         }
@@ -109,8 +109,7 @@ class CalculatorSystem implements Runnable
                 rst = operands.get(0) * operands.get(1);
                 break;
             case "DIV":
-                if (operands.get(1) == 0)
-                    throw new InvalidCalculationException("Divide by Zero"); // if divide by 0
+                if (operands.get(1) == 0) throw new InvalidCalculationException("Divide by Zero"); // if divide by 0
                 rst = (double) operands.get(0) / operands.get(1);
                 break;
             default:
