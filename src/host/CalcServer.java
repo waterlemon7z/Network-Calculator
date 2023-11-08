@@ -18,34 +18,14 @@ public class CalcServer
         while(true)
         {
             Socket sock = serverSocket.accept();
-            pool.execute(new Capitalizer(sock));
-        }
-    }
-
-    private static class Capitalizer implements Runnable
-    {
-        private final Socket socket;
-
-        public Capitalizer(Socket socket)
-        {
-            this.socket = socket;
-        }
-
-        @Override
-        public void run()
-        {
-            System.out.println("Connected : " + socket);
             try
             {
-                InputStream is = socket.getInputStream();
-                byte[] recvBytes = new byte[1024];
-                int read = is.read(recvBytes);
-                RequestEntity recvEntity = ObjectManager.toObject(recvBytes, RequestEntity.class);
-                System.out.println(recvEntity.toString());
-            } catch (IOException | ClassNotFoundException e)
+                pool.execute(new CalculatorSystem(sock));
+            }catch (RuntimeException e)
             {
-                throw new RuntimeException(e);
+                System.out.println(e.getMessage());
             }
         }
     }
 }
+

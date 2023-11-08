@@ -1,16 +1,33 @@
 package entity;
 
-public class ResponseEntity
+import java.io.Serializable;
+
+public class ResponseEntity implements Serializable
 {
     int statusCode;
-    double calcNum;
+    Double calcNum;
     String message;
 
-    public ResponseEntity(int statusCode, double calcNum, String message)
+    public ResponseEntity(int statusCode, Double calcNum, String message)
     {
         this.statusCode = statusCode;
         this.calcNum = calcNum;
         this.message = message;
+    }
+
+    public int getStatusCode()
+    {
+        return statusCode;
+    }
+
+    public Double getCalcNum()
+    {
+        return calcNum;
+    }
+
+    public String getMessage()
+    {
+        return message;
     }
 
     @Override

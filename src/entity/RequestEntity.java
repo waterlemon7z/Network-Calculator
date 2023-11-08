@@ -4,31 +4,23 @@ import java.io.Serializable;
 
 public class RequestEntity implements Serializable
 {
-    private final String operator;
-    private final String operands;
+    private final String calcMessage;
 
-    public RequestEntity(String operator, String operands)
+    public RequestEntity(String operator)
     {
-        this.operator = operator;
-        this.operands = operands;
+        this.calcMessage = operator;
     }
 
-    public String getOperator()
+    public String getCalcMessage()
     {
-        return operator;
-    }
-
-    public String getOperands()
-    {
-        return operands;
+        return calcMessage;
     }
 
     @Override
     public String toString()
     {
         return "RequestEntity{" +
-                "operator='" + operator + '\'' +
-                ", operands='" + operands + '\'' +
+                "operator='" + calcMessage + '\'' +
                 '}';
     }
 }
