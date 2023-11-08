@@ -1,10 +1,12 @@
 package host;
-import entity.test;
+import entity.RequestEntity;
+import utils.ObjectManager;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CalcServer
 {
@@ -12,33 +14,38 @@ public class CalcServer
     {
         ServerSocket serverSocket = new ServerSocket(59090);
         System.out.println("Calculator Server is Running!!");
-        test t = new test();
-        t.setA(10);
-        byte[] byteArray = toByteArray(t);
-
+        ExecutorService pool = Executors.newFixedThreadPool(20);
         while(true)
         {
-            try(Socket socket = serverSocket.accept())
-            {
-//                PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-//                printWriter.println("ok");
-
-                OutputStream os = socket.getOutputStream();
-                os.write(byteArray);
-                os.flush();
-            }
+            Socket sock = serverSocket.accept();
+            pool.execute(new Capitalizer(sock));
         }
     }
-    public static byte[] toByteArray (Object obj)
+
+    private static class Capitalizer implements Runnable
     {
-        ByteArrayOutputStream boas = new ByteArrayOutputStream();
-        try (ObjectOutputStream ois = new ObjectOutputStream(boas))
+        private final Socket socket;
+
+        public Capitalizer(Socket socket)
         {
-            ois.writeObject(obj);
-            return boas.toByteArray();
-        } catch (IOException e)
+            this.socket = socket;
+        }
+
+        @Override
+        public void run()
         {
-            throw new RuntimeException(e);
+            System.out.println("Connected : " + socket);
+            try
+            {
+                InputStream is = socket.getInputStream();
+                byte[] recvBytes = new byte[1024];
+                int read = is.read(recvBytes);
+                RequestEntity recvEntity = ObjectManager.toObject(recvBytes, RequestEntity.class);
+                System.out.println(recvEntity.toString());
+            } catch (IOException | ClassNotFoundException e)
+            {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
